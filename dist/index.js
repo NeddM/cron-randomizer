@@ -24732,13 +24732,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const fs = __importStar(__nccwpck_require__(7147));
-// import * as github from "@actions/github";
 // Reading inputs
 const which_cron = core.getInput("which_cron");
 const what_to_randomize = core.getInput("what_to_randomize");
 const file = core.getInput("file");
 console.log(`which_cron: ${which_cron}`);
 console.log(`what_to_randomize: ${what_to_randomize}`);
+console.log(`file: ${file}`);
 function findCrons(file) {
     const fileContent = fs.readFileSync(file, "utf-8");
     const lines = fileContent.split("\n");

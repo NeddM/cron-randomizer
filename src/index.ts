@@ -1,6 +1,5 @@
 import * as core from "@actions/core";
 import * as fs from "fs";
-// import * as github from "@actions/github";
 
 // Reading inputs
 const which_cron: string = core.getInput("which_cron");
@@ -9,6 +8,7 @@ const file: string = core.getInput("file");
 
 console.log(`which_cron: ${which_cron}`);
 console.log(`what_to_randomize: ${what_to_randomize}`);
+console.log(`file: ${file}`);
 
 function findCrons(file: string): string[] {
   const fileContent = fs.readFileSync(file, "utf-8");
