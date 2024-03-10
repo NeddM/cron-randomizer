@@ -17,8 +17,8 @@ jobs:
       - name: Test action
         uses: ./
         with:
-          which_cron: 0
-          what_to_randomize: "y y n n n"
+          whichCron: 0
+          whatToRandomize: "y y n n n"
 
       - name: Cat workflow
         run: |
