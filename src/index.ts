@@ -4,8 +4,10 @@ import * as fs from "fs";
 // Reading inputs
 const fixedFilePath = (filePath: string): string => {
   const parts: string[] = filePath.split("@");
-  const directory: string[] = parts[0].split("/");
-  const endPath: string = `${directory[-3]}/${directory[-2]}/${directory[-1]}`;
+  var directory: string[] = parts[0].split("/");
+  directory = directory.slice(-3);
+  // const endPath: string = `${directory[-3]}/${directory[-2]}/${directory[-1]}`;
+  const endPath: string = directory.join("/");
 
   return endPath;
 };

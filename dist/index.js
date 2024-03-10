@@ -24735,8 +24735,10 @@ const fs = __importStar(__nccwpck_require__(7147));
 // Reading inputs
 const fixedFilePath = (filePath) => {
     const parts = filePath.split("@");
-    const directory = parts[0].split("/");
-    const endPath = `${directory[-3]}/${directory[-2]}/${directory[-1]}`;
+    var directory = parts[0].split("/");
+    directory = directory.slice(-3);
+    // const endPath: string = `${directory[-3]}/${directory[-2]}/${directory[-1]}`;
+    const endPath = directory.join("/");
     return endPath;
 };
 const which_cron = core.getInput("which_cron");
