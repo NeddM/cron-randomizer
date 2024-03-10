@@ -125,13 +125,16 @@ const replaceValues = (cronjob: string, randomValues: string[]) => {
 const buildCronjob = (cronjob: string, randomValues: string[]): string[] => {
   const regex: RegExp = /"([^"]*)"/g;
 
-  const values: string[] = [];
+  var values: string[] = [];
   var newValues: string[] = [];
   let match: RegExpExecArray | null;
 
   while ((match = regex.exec(cronjob)) !== null) {
     values.push(match[1]);
   }
+  // [ '0 0 * * *' ]
+
+  values = values[0].split(" ");
 
   console.log(values);
 

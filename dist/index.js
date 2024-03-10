@@ -24837,12 +24837,14 @@ const replaceValues = (cronjob, randomValues) => {
 };
 const buildCronjob = (cronjob, randomValues) => {
     const regex = /"([^"]*)"/g;
-    const values = [];
+    var values = [];
     var newValues = [];
     let match;
     while ((match = regex.exec(cronjob)) !== null) {
         values.push(match[1]);
     }
+    // [ '0 0 * * *' ]
+    values = values[0].split(" ");
     console.log(values);
     for (let value = 0; value < randomValues.length; value++) {
         if (randomValues[value] !== "n") {
