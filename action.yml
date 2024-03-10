@@ -13,7 +13,7 @@ inputs:
   file:
     description: "File that will be modified"
     required: false
-    default: ${{ github.GITHUB_WORKFLOW_REF }}
+    default: ${{ github.WORKFLOW_REF }}
 
 runs:
   using: node20
