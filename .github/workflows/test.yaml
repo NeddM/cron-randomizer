@@ -14,3 +14,7 @@ jobs:
 
       - name: Test action
         uses: ./
+        with:
+          which_cron: 0
+          what_to_randomize: 1/1/0/0/0
+
