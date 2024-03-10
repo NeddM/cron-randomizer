@@ -24735,8 +24735,9 @@ const fs = __importStar(__nccwpck_require__(7147));
 // Reading inputs
 const fixedFilePath = (filePath) => {
     const parts = filePath.split("@");
-    const directory = parts[0];
-    return directory;
+    const directory = parts[0].split("/");
+    const endPath = `${directory[-3]}/${directory[-2]}/${directory[-1]}`;
+    return endPath;
 };
 const which_cron = core.getInput("which_cron");
 const what_to_randomize = core.getInput("what_to_randomize");

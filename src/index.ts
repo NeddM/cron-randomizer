@@ -4,9 +4,10 @@ import * as fs from "fs";
 // Reading inputs
 const fixedFilePath = (filePath: string): string => {
   const parts: string[] = filePath.split("@");
-  const directory: string = parts[0];
+  const directory: string[] = parts[0].split("/");
+  const endPath: string = `${directory[-3]}/${directory[-2]}/${directory[-1]}`;
 
-  return directory;
+  return endPath;
 };
 
 const which_cron: string = core.getInput("which_cron");
