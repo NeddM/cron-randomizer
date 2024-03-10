@@ -24732,20 +24732,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const fs = __importStar(__nccwpck_require__(7147));
+// Validating inputs
+if (core.getInput("whichCron") === "") {
+    core.setFailed("Input for whichCron is not valid.");
+}
+if (core.getInput("whatToRandomize") === "") {
+    core.setFailed("Input for whatToRandomize is not valid.");
+}
+if (core.getInput("file") === "") {
+    core.setFailed("Input for file is not valid, please dont set that value. Leave it empty.");
+}
 // Reading inputs
-const whichCron = parseInt(core.getInput("which_cron"));
-const whatToRandomize = core.getInput("what_to_randomize");
+const whichCron = parseInt(core.getInput("whichCron"));
+const whatToRandomize = core.getInput("whatToRandomize");
 const file = (function file() {
     const parts = core.getInput("file").split("@");
     var directory = parts[0].split("/");
     directory = directory.slice(-3);
-    // const endPath: string = `${directory[-3]}/${directory[-2]}/${directory[-1]}`;
     const endPath = directory.join("/");
     return endPath;
 })();
-console.log(`which_cron input: ${whichCron}`);
-console.log(`what_to_randomize input: ${whatToRandomize}`);
-console.log(`file input: ${file}`);
 // Function to find cronjobs on our file
 const findCrons = (file) => {
     const fileContent = fs.readFileSync(file, "utf-8");
@@ -24797,7 +24803,6 @@ const randomizeValues = (cronjob) => {
     else {
         randomizedValues.push("n");
     }
-    // return randomizedValues.join(" ");
     return randomizedValues;
 };
 const generateMinutes = () => {
@@ -24816,22 +24821,18 @@ const generateDayOfWeek = () => {
     return Math.floor(Math.random() * 7).toString();
 };
 const replaceValues = (cronjob, randomValues) => {
-    // Utilizando una expresión regular para encontrar valores entre comillas
     let nuevaCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
     fs.readFile(file, "utf8", (error, data) => {
         if (error) {
             console.error("Error al leer el archivo:", error);
             return;
         }
-        // Modifica la línea deseada
         let nuevaData = data.replace(cronjob, nuevaCronExpression);
-        // Escribe los cambios de vuelta al archivo
         fs.writeFile(file, nuevaData, "utf8", (error) => {
             if (error) {
                 console.error("Error al escribir en el archivo:", error);
                 return;
             }
-            console.log("El archivo ha sido modificado satisfactoriamente.");
         });
     });
 };
@@ -24843,9 +24844,7 @@ const buildCronjob = (cronjob, randomValues) => {
     while ((match = regex.exec(cronjob)) !== null) {
         values.push(match[1]);
     }
-    // [ '0 0 * * *' ]
     values = values[0].split(" ");
-    console.log(values);
     for (let value = 0; value < randomValues.length; value++) {
         if (randomValues[value] !== "n") {
             newValues.push(randomValues[value]);
@@ -24854,9 +24853,9 @@ const buildCronjob = (cronjob, randomValues) => {
             newValues.push(values[value]);
         }
     }
+    console.log(`El nuevo valor del cronjob es ${newValues}`);
     return newValues;
 };
-// console.log(findCrons(file));
 const cronjob = findCrons(file)[whichCron];
 const randomValues = randomizeValues(whatToRandomize);
 const builtCronjob = buildCronjob(cronjob, randomValues);
