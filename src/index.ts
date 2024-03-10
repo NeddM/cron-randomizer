@@ -2,9 +2,16 @@ import * as core from "@actions/core";
 import * as fs from "fs";
 
 // Reading inputs
+const fixedFilePath = (filePath: string): string => {
+  const parts: string[] = filePath.split("/");
+  const directory: string = parts[parts.length - 2];
+
+  return directory;
+};
+
 const which_cron: string = core.getInput("which_cron");
 const what_to_randomize: string = core.getInput("what_to_randomize");
-const file: string = core.getInput("file");
+const file: string = fixedFilePath(core.getInput("file"));
 
 console.log(`which_cron: ${which_cron}`);
 console.log(`what_to_randomize: ${what_to_randomize}`);

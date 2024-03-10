@@ -24733,9 +24733,14 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const fs = __importStar(__nccwpck_require__(7147));
 // Reading inputs
+const fixedFilePath = (filePath) => {
+    const parts = filePath.split("/");
+    const directory = parts[parts.length - 2];
+    return directory;
+};
 const which_cron = core.getInput("which_cron");
 const what_to_randomize = core.getInput("what_to_randomize");
-const file = core.getInput("file");
+const file = fixedFilePath(core.getInput("file"));
 console.log(`which_cron: ${which_cron}`);
 console.log(`what_to_randomize: ${what_to_randomize}`);
 console.log(`file: ${file}`);
