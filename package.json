@@ -2,6 +2,7 @@
   "name": "cron-randomizer",
   "version": "1.0.0",
   "description": "Action to randomize the cron schedule.",
+  "author": "Nedd Chairi Muñoz",
   "main": "index.js",
   "compilerOptions": {
     "esModuleInterop": true
@@ -19,7 +20,6 @@
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.5.11",
