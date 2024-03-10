@@ -122,8 +122,33 @@ const replaceValues = (cronjob: string, randomValues: string[]) => {
   });
 };
 
+const buildCronjob = (cronjob: string, randomValues: string[]): string[] => {
+  const regex: RegExp = /"([^"]*)"/g;
+
+  const values: string[] = [];
+  var newValues: string[] = [];
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(cronjob)) !== null) {
+    values.push(match[1]);
+  }
+
+  console.log(values);
+
+  for (let value = 0; value < randomValues.length; value++) {
+    if (randomValues[value] !== "n") {
+      newValues.push(randomValues[value]);
+    } else {
+      newValues.push(values[value]);
+    }
+  }
+
+  return newValues;
+};
+
 // console.log(findCrons(file));
 
 const cronjob: string = findCrons(file)[whichCron];
 const randomValues = randomizeValues(whatToRandomize);
-replaceValues(cronjob, randomValues);
+const builtCronjob: string[] = buildCronjob(cronjob, randomValues);
+replaceValues(cronjob, builtCronjob);

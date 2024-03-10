@@ -24835,10 +24835,30 @@ const replaceValues = (cronjob, randomValues) => {
         });
     });
 };
+const buildCronjob = (cronjob, randomValues) => {
+    const regex = /"([^"]*)"/g;
+    const values = [];
+    var newValues = [];
+    let match;
+    while ((match = regex.exec(cronjob)) !== null) {
+        values.push(match[1]);
+    }
+    console.log(values);
+    for (let value = 0; value < randomValues.length; value++) {
+        if (randomValues[value] !== "n") {
+            newValues.push(randomValues[value]);
+        }
+        else {
+            newValues.push(values[value]);
+        }
+    }
+    return newValues;
+};
 // console.log(findCrons(file));
 const cronjob = findCrons(file)[whichCron];
 const randomValues = randomizeValues(whatToRandomize);
-replaceValues(cronjob, randomValues);
+const builtCronjob = buildCronjob(cronjob, randomValues);
+replaceValues(cronjob, builtCronjob);
 
 
 /***/ }),
