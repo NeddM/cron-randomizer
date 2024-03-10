@@ -10,6 +10,11 @@ inputs:
     description: "What values you want to randomize. Use 1 to randomize, and 0 to leave that value. Eg: 1/1/0/0/0."
     required: true
 
+  file:
+    description: "File that will be modified"
+    required: false
+    default: ${{ github.GITHUB_WORKFLOW_REF }}
+
 runs:
   using: node20
   main: ./dist/index.js
