@@ -24733,21 +24733,21 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const fs = __importStar(__nccwpck_require__(7147));
 // Reading inputs
-const fixedFilePath = (filePath) => {
-    const parts = filePath.split("@");
+const whichCron = parseInt(core.getInput("which_cron"));
+const whatToRandomize = core.getInput("what_to_randomize");
+const file = (function file() {
+    const parts = core.getInput("file").split("@");
     var directory = parts[0].split("/");
     directory = directory.slice(-3);
     // const endPath: string = `${directory[-3]}/${directory[-2]}/${directory[-1]}`;
     const endPath = directory.join("/");
     return endPath;
-};
-const which_cron = core.getInput("which_cron");
-const what_to_randomize = core.getInput("what_to_randomize");
-const file = fixedFilePath(core.getInput("file"));
-console.log(`which_cron: ${which_cron}`);
-console.log(`what_to_randomize: ${what_to_randomize}`);
-console.log(`file: ${file}`);
-function findCrons(file) {
+})();
+console.log(`which_cron input: ${whichCron}`);
+console.log(`what_to_randomize input: ${whatToRandomize}`);
+console.log(`file input: ${file}`);
+// Function to find cronjobs on our file
+const findCrons = (file) => {
     const fileContent = fs.readFileSync(file, "utf-8");
     const lines = fileContent.split("\n");
     const coincidences = [];
@@ -24758,8 +24758,87 @@ function findCrons(file) {
         }
     });
     return coincidences;
-}
-console.log(findCrons(file));
+};
+const randomizeValues = (cronjob) => {
+    const inputs = cronjob.split(" ");
+    var randomizedValues = [];
+    if (inputs[0] === "y") {
+        const newMinutes = generateMinutes();
+        randomizedValues.push(newMinutes);
+    }
+    else {
+        randomizedValues.push("n");
+    }
+    if (inputs[1] === "y") {
+        const newHours = generateHours();
+        randomizedValues.push(newHours);
+    }
+    else {
+        randomizedValues.push("n");
+    }
+    if (inputs[2] === "y") {
+        const newDayOfMonth = generateDayOfMonth();
+        randomizedValues.push(newDayOfMonth);
+    }
+    else {
+        randomizedValues.push("n");
+    }
+    if (inputs[3] === "y") {
+        const newMonth = generateMonth();
+        randomizedValues.push(newMonth);
+    }
+    else {
+        randomizedValues.push("n");
+    }
+    if (inputs[4] === "y") {
+        const newDayOfWeek = generateDayOfWeek();
+        randomizedValues.push(newDayOfWeek);
+    }
+    else {
+        randomizedValues.push("n");
+    }
+    // return randomizedValues.join(" ");
+    return randomizedValues;
+};
+const generateMinutes = () => {
+    return Math.floor(Math.random() * 60).toString();
+};
+const generateHours = () => {
+    return Math.floor(Math.random() * 24).toString();
+};
+const generateDayOfMonth = () => {
+    return Math.floor(Math.random() * 28).toString();
+};
+const generateMonth = () => {
+    return Math.floor(Math.random() * 12).toString();
+};
+const generateDayOfWeek = () => {
+    return Math.floor(Math.random() * 7).toString();
+};
+const replaceValues = (cronjob, randomValues) => {
+    // Utilizando una expresión regular para encontrar valores entre comillas
+    let nuevaCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
+    fs.readFile(file, "utf8", (error, data) => {
+        if (error) {
+            console.error("Error al leer el archivo:", error);
+            return;
+        }
+        // Modifica la línea deseada
+        let nuevaData = data.replace(cronjob, nuevaCronExpression);
+        // Escribe los cambios de vuelta al archivo
+        fs.writeFile(file, nuevaData, "utf8", (error) => {
+            if (error) {
+                console.error("Error al escribir en el archivo:", error);
+                return;
+            }
+            console.log("El archivo ha sido modificado satisfactoriamente.");
+        });
+    });
+};
+// console.log(findCrons(file));
+const cronjob = findCrons(file)[whichCron];
+const randomValues = randomizeValues(whatToRandomize);
+replaceValues(cronjob, randomValues);
 
 
 /***/ }),

@@ -18,5 +18,9 @@ jobs:
         uses: ./
         with:
           which_cron: 0
-          what_to_randomize: 1/1/0/0/0
+          what_to_randomize: "y y n n n"
+
+      - name: Cat workflow
+        run: |
+          cat .github/workflows/test.yaml
 
