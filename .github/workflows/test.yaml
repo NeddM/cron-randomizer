@@ -4,6 +4,8 @@
 
 on:
   push:
+  # schedule:
+    # - cron: "0 0 * * *"
 
 jobs:
   test:
@@ -14,3 +16,11 @@ jobs:
 
       - name: Test action
         uses: ./
+        with:
+          whichCron: 0
+          whatToRandomize: "y y n n n"
+
+      - name: Cat workflow
+        run: |
+          cat .github/workflows/test.yaml
+
