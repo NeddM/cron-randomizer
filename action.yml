@@ -1,0 +1,15 @@
+name: "cron-randomizer"
+description: "Action to randomize the cron schedule."
+
+inputs:
+  which_cron:
+    description: "If there are more than one cronjob, indicate which one you want to randomize (0, 1, 2, 3)."
+    required: false
+
+  what_to_randomize:
+    description: "What values you want to randomize. Use 1 to randomize, and 0 to leave that value. Eg: 1/1/0/0/0."
+    required: true
+
+runs:
+  using: node20
+  main: ./dist/index.js
