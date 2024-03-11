@@ -116,7 +116,7 @@ const replaceValues = (cronjob: string, randomValues: string[]) => {
       return;
     }
 
-    let nuevaData = data.replace(cronjob, `"${nuevaCronExpression}"`);
+    let nuevaData = data.replace(cronjob, `\"${nuevaCronExpression}\"`);
 
     fs.writeFile(file, nuevaData, "utf8", (error) => {
       if (error) {
