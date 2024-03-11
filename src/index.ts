@@ -105,22 +105,22 @@ const generateDayOfWeek = (): string => {
 };
 
 const replaceValues = (cronjob: string, randomValues: string[]) => {
-  let nuevaCronExpression = cronjob.replace(
+  let newCronExpression = cronjob.replace(
     /"([^"]*)"/,
     randomValues.join(" "),
   );
 
   fs.readFile(file, "utf8", (error, data) => {
     if (error) {
-      console.error("Error al leer el archivo:", error);
+      core.setFailed(`Error reading the file: ${error}`);
       return;
     }
 
-    let nuevaData = data.replace(cronjob, `\"${nuevaCronExpression}\"`);
+    let newData = data.replace(cronjob, `\"${newCronExpression}\"`);
 
-    fs.writeFile(file, nuevaData, "utf8", (error) => {
+    fs.writeFile(file, newData, "utf8", (error) => {
       if (error) {
-        console.error("Error al escribir en el archivo:", error);
+        core.setFailed(`Error writing the file: ${error}`);
         return;
       }
     });
