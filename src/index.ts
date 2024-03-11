@@ -148,7 +148,9 @@ const buildCronjob = (cronjob: string, randomValues: string[]): string[] => {
     }
   }
 
-  console.log(`The new cronjob value is: ${newValues.join(" ")}`);
+  const newValue: string = newValues.join(" ");
+
+  console.log(`The new cronjob value is: ${newValue}`);
 
   return newValues;
 };
