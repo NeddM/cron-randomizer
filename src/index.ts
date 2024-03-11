@@ -2,8 +2,10 @@ import * as core from "@actions/core";
 import * as fs from "fs";
 
 // Validating inputs
-if (core.getInput("whichCron") === "") {
-  core.setFailed("Input for whichCron is not valid.");
+try {
+  parseInt(core.getInput("whichCron"));
+} catch {
+  core.setFailed("Int value expected for whichCron input.");
 }
 if (core.getInput("whatToRandomize") === "") {
   core.setFailed("Input for whatToRandomize is not valid.");
@@ -114,7 +116,7 @@ const replaceValues = (cronjob: string, randomValues: string[]) => {
       return;
     }
 
-    let nuevaData = data.replace(cronjob, nuevaCronExpression);
+    let nuevaData = data.replace(cronjob, `"${nuevaCronExpression}"`);
 
     fs.writeFile(file, nuevaData, "utf8", (error) => {
       if (error) {
