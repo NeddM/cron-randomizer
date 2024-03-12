@@ -24823,14 +24823,20 @@ const generateMonth = () => {
 const generateDayOfWeek = () => {
     return Math.floor(Math.random() * 7).toString();
 };
-const replaceValues = (cronjob, randomValues) => {
+const replaceValues = (cronjob, randomValues, file) => {
     let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
+    const regex = /- cron:\s*(.*)/;
+    const match = newCronExpression.match(regex);
+    if (match && match.length > 1) {
+        const cronValue = match[1];
+        newCronExpression = newCronExpression.replace(cronValue, `"${cronValue}"`);
+    }
     fs.readFile(file, "utf8", (error, data) => {
         if (error) {
             core.setFailed(`Error reading the file: ${error}`);
             return;
         }
-        let newData = data.replace(cronjob, `\"${newCronExpression}\"`);
+        let newData = data.replace(cronjob, newCronExpression);
         fs.writeFile(file, newData, "utf8", (error) => {
             if (error) {
                 core.setFailed(`Error writing the file: ${error}`);
@@ -24863,7 +24869,7 @@ const buildCronjob = (cronjob, randomValues) => {
 const cronjob = findCrons(file)[whichCron];
 const randomValues = randomizeValues(whatToRandomize);
 const builtCronjob = buildCronjob(cronjob, randomValues);
-replaceValues(cronjob, builtCronjob);
+replaceValues(cronjob, builtCronjob, file);
 
 
 /***/ }),

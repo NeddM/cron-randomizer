@@ -1,6 +1,4 @@
-
-
-
+name: Testing action
 
 on:
   workflow_dispatch:

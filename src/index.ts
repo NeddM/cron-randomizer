@@ -104,32 +104,22 @@ const generateDayOfWeek = (): string => {
   return Math.floor(Math.random() * 7).toString();
 };
 
-const replaceValues = (cronjob: string, randomValues: string[], file: string) => {
-  // let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
+const replaceValues = (
+  cronjob: string,
+  randomValues: string[],
+  file: string,
+) => {
+  let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
 
-  // fs.readFile(file, "utf8", (error, data) => {
-  //   if (error) {
-  //     core.setFailed(`Error reading the file: ${error}`);
-  //     return;
-  //   }
+  const regex = /- cron:\s*(.*)/;
+  const match = newCronExpression.match(regex);
 
-  //   let newData = data.replace(cronjob, `\"${newCronExpression}\"`);
+  if (match && match.length > 1) {
+    const cronValue = match[1];
+    newCronExpression = newCronExpression.replace(cronValue, `"${cronValue}"`);
+  }
 
-  //   fs.writeFile(file, newData, "utf8", (error) => {
-  //     if (error) {
-  //       core.setFailed(`Error writing the file: ${error}`);
-  //       return;
-  //     }
-  //   });
-  // });
-
-
-  let newCronExpression = cronjob.replace(
-    /- cron:\s*(.*)/,
-    (_match, p1) => `- cron: "${p1.trim()}"`
-  );
-
-  fs.readFile(file, "utf8", (error: string, data: string) => {
+  fs.readFile(file, "utf8", (error, data) => {
     if (error) {
       core.setFailed(`Error reading the file: ${error}`);
       return;
@@ -137,17 +127,13 @@ const replaceValues = (cronjob: string, randomValues: string[], file: string) =>
 
     let newData = data.replace(cronjob, newCronExpression);
 
-    fs.writeFile(file, newData, "utf8", (error: string) => {
+    fs.writeFile(file, newData, "utf8", (error) => {
       if (error) {
         core.setFailed(`Error writing the file: ${error}`);
         return;
       }
     });
   });
-
-
-
-
 };
 
 const buildCronjob = (cronjob: string, randomValues: string[]): string[] => {
