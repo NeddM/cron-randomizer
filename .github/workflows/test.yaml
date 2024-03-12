@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test action
-        uses: ./
+        uses: NeddM/cron-randomizer@development
         with:
           whichCron: 0
           whatToRandomize: "y y n n n"

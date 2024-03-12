@@ -106,7 +106,6 @@ const generateDayOfWeek = (): string => {
 
 const replaceValues = (cronjob: string, randomValues: string[], file: string) => {
   let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
-  console.log(`newCronExpression: ${newCronExpression}`);
 
 
   const regex = /- cron:\s*(.*)/;
