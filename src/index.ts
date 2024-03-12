@@ -105,10 +105,7 @@ const generateDayOfWeek = (): string => {
 };
 
 const replaceValues = (cronjob: string, randomValues: string[]) => {
-  let newCronExpression = cronjob.replace(
-    /"([^"]*)"/,
-    randomValues.join(" "),
-  );
+  let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
 
   fs.readFile(file, "utf8", (error, data) => {
     if (error) {

@@ -24733,8 +24733,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const fs = __importStar(__nccwpck_require__(7147));
 // Validating inputs
-if (core.getInput("whichCron") === "") {
-    core.setFailed("Input for whichCron is not valid.");
+try {
+    parseInt(core.getInput("whichCron"));
+}
+catch {
+    core.setFailed("Int value expected for whichCron input.");
 }
 if (core.getInput("whatToRandomize") === "") {
     core.setFailed("Input for whatToRandomize is not valid.");
@@ -24821,16 +24824,16 @@ const generateDayOfWeek = () => {
     return Math.floor(Math.random() * 7).toString();
 };
 const replaceValues = (cronjob, randomValues) => {
-    let nuevaCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
+    let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
     fs.readFile(file, "utf8", (error, data) => {
         if (error) {
-            console.error("Error al leer el archivo:", error);
+            core.setFailed(`Error reading the file: ${error}`);
             return;
         }
-        let nuevaData = data.replace(cronjob, nuevaCronExpression);
-        fs.writeFile(file, nuevaData, "utf8", (error) => {
+        let newData = data.replace(cronjob, `\"${newCronExpression}\"`);
+        fs.writeFile(file, newData, "utf8", (error) => {
             if (error) {
-                console.error("Error al escribir en el archivo:", error);
+                core.setFailed(`Error writing the file: ${error}`);
                 return;
             }
         });
@@ -24853,7 +24856,8 @@ const buildCronjob = (cronjob, randomValues) => {
             newValues.push(values[value]);
         }
     }
-    console.log(`El nuevo valor del cronjob es ${newValues}`);
+    const newValue = newValues.join(" ");
+    console.log(`The new cronjob value is: ${newValue}`);
     return newValues;
 };
 const cronjob = findCrons(file)[whichCron];
