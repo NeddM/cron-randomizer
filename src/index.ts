@@ -111,16 +111,11 @@ const replaceValues = (
 ) => {
   let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
 
-  console.log(`newCronExpression ${newCronExpression}`);
-
   const regex = /- cron:\s*(.*)/;
   const match = newCronExpression.match(regex);
 
   if (match && match.length > 1) {
-    // Extraemos el valor de la expresión cron
     const cronValue = match[1];
-
-    // Agregamos comillas alrededor del valor y lo reemplazamos en la cadena original
     newCronExpression = newCronExpression.replace(cronValue, `"${cronValue}"`);
   }
 
