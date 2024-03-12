@@ -104,11 +104,14 @@ const generateDayOfWeek = (): string => {
   return Math.floor(Math.random() * 7).toString();
 };
 
-const replaceValues = (cronjob: string, randomValues: string[], file: string) => {
+const replaceValues = (
+  cronjob: string,
+  randomValues: string[],
+  file: string,
+) => {
   let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
 
   console.log(`newCronExpression ${newCronExpression}`);
-
 
   const regex = /- cron:\s*(.*)/;
   const match = newCronExpression.match(regex);
@@ -120,7 +123,6 @@ const replaceValues = (cronjob: string, randomValues: string[], file: string) =>
     // Agregamos comillas alrededor del valor y lo reemplazamos en la cadena original
     newCronExpression = newCronExpression.replace(cronValue, `"${cronValue}"`);
   }
-
 
   fs.readFile(file, "utf8", (error, data) => {
     if (error) {
