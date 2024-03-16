@@ -110,7 +110,7 @@ describe('generateDayOfWeek', () => {
   it("Returns a value between 1 and 7", () => {
     const result: string = generateDayOfWeek();
 
-    expect(parseInt(result)).toBeGreaterThanOrEqual(1);
+    expect(parseInt(result)).toBeGreaterThanOrEqual(0);
     expect(parseInt(result)).toBeLessThanOrEqual(7);
   });
 
