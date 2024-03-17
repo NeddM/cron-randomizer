@@ -4,7 +4,7 @@ import * as utils from "./utils";
 import * as inputs from "./inputs";
 
 // Function to find cronjobs on our file
-const findCrons = (file: string): string[] => {
+export const findCrons = (file: string): string[] => {
   const fileContent: string = fs.readFileSync(file, "utf-8");
   const lines: string[] = fileContent.split("\n");
   const coincidences: string[] = [];
