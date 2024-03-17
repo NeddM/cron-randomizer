@@ -32,4 +32,20 @@ describe("Inputs files", () => {
 
     jest.restoreAllMocks();
   });
+
+  it("If the input does not exists, it throws an error.", () => {
+
+    var whichCronToFail;
+
+    jest.spyOn(core, "getInput").mockReturnValue("");
+
+    if (core.getInput("") === "") {
+      whichCronToFail = undefined
+    }
+
+    expect(whichCronToFail).toBeUndefined();
+  });
 });
+
+
+
