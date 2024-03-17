@@ -17,6 +17,10 @@ export const findCrons = (file: string): string[] => {
     }
   });
 
+  if (coincidences.length === 0) {
+    core.setFailed("Not found any cronjob.");
+  }
+
   return coincidences;
 };
 
