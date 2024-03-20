@@ -1,19 +1,24 @@
-import { generateMinutes, generateHours, generateMonth, generateDayOfMonth, generateDayOfWeek } from "../src/utils";
+import {
+  generateMinutes,
+  generateHours,
+  generateMonth,
+  generateDayOfMonth,
+  generateDayOfWeek,
+} from "../src/utils";
 
-
-describe('GenerateMinutes', () => {
-  it('Returns an string', () => {
+describe("GenerateMinutes", () => {
+  it("Returns an string", () => {
     const result: string = generateMinutes();
     expect(typeof result).toBe("string");
   });
 
-  it('Returns a number between 0 and 60 as string', () => {
-    const result: string = generateMinutes()
+  it("Returns a number between 0 and 60 as string", () => {
+    const result: string = generateMinutes();
     expect(parseInt(result)).toBeGreaterThanOrEqual(0);
     expect(parseInt(result)).toBeLessThanOrEqual(60);
   });
 
-  it('Returns different values on consecutive calls', () => {
+  it("Returns different values on consecutive calls", () => {
     const results = new Set<string>();
 
     for (let i = 0; i < 1000; i++) {
@@ -21,48 +26,47 @@ describe('GenerateMinutes', () => {
     }
 
     expect(results.size).toBeLessThanOrEqual(60);
-  })
+  });
 });
 
-describe('GenerateHours', () => {
-  it('Returns a string value', () => {
+describe("GenerateHours", () => {
+  it("Returns a string value", () => {
     const result: string = generateHours();
     expect(typeof result).toBe("string");
   });
 
-
-  it('Returns a random number between 0 and 24', () => {
+  it("Returns a random number between 0 and 24", () => {
     const result: string = generateHours();
     expect(parseInt(result)).toBeGreaterThanOrEqual(0);
     expect(parseInt(result)).toBeLessThanOrEqual(24);
   });
 
-  it('Returns different values on consecutive calls', () => {
+  it("Returns different values on consecutive calls", () => {
     const results = new Set<string>();
 
     for (let i = 0; i < 1000; i++) {
-      results.add(generateHours())
+      results.add(generateHours());
     }
 
     expect(results.size).toBeLessThanOrEqual(24);
   });
 });
 
-describe('GenerateMonth', () => {
-  it('Returns a string value', () => {
+describe("GenerateMonth", () => {
+  it("Returns a string value", () => {
     const result = generateMonth();
 
     expect(typeof result).toBe("string");
   });
 
-  it('Returns a random value between 1 and 12', () => {
+  it("Returns a random value between 1 and 12", () => {
     const result = generateMonth();
 
     expect(parseInt(result)).toBeGreaterThanOrEqual(1);
     expect(parseInt(result)).toBeLessThanOrEqual(12);
   });
 
-  it('Returns different values on consecutive calls', () => {
+  it("Returns different values on consecutive calls", () => {
     const results = new Set<string>();
 
     for (let i = 0; i < 1000; i++) {
@@ -70,11 +74,10 @@ describe('GenerateMonth', () => {
     }
 
     expect(results.size).toBeLessThanOrEqual(12);
-
   });
 });
 
-describe('generateDayOfMonth', () => {
+describe("generateDayOfMonth", () => {
   it("Returns a string value", () => {
     const result: string = generateDayOfMonth();
 
@@ -91,16 +94,14 @@ describe('generateDayOfMonth', () => {
     const results = new Set<string>();
 
     for (let i = 0; i < 1000; i++) {
-      results.add(generateDayOfMonth())
+      results.add(generateDayOfMonth());
     }
 
     expect(results.size).toBeLessThanOrEqual(28);
-
   });
-
 });
 
-describe('generateDayOfWeek', () => {
+describe("generateDayOfWeek", () => {
   it("Returns a string value", () => {
     const result: string = generateDayOfWeek();
 
@@ -122,7 +123,5 @@ describe('generateDayOfWeek', () => {
     }
 
     expect(results.size).toBeLessThanOrEqual(7);
-
   });
-
 });

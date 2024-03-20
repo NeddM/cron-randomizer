@@ -24701,7 +24701,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 6144:
+/***/ 7063:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -24730,8 +24730,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.file = exports.whatToRandomize = exports.whichCron = void 0;
 const core = __importStar(__nccwpck_require__(2186));
-const fs = __importStar(__nccwpck_require__(7147));
 // Validating inputs
 try {
     parseInt(core.getInput("whichCron"));
@@ -24746,15 +24746,53 @@ if (core.getInput("file") === "") {
     core.setFailed("Input for file is not valid, please dont set that value. Leave it empty.");
 }
 // Reading inputs
-const whichCron = parseInt(core.getInput("whichCron"));
-const whatToRandomize = core.getInput("whatToRandomize");
-const file = (function file() {
+exports.whichCron = parseInt(core.getInput("whichCron"));
+exports.whatToRandomize = core.getInput("whatToRandomize");
+exports.file = (function file() {
     const parts = core.getInput("file").split("@");
     var directory = parts[0].split("/");
     directory = directory.slice(-3);
     const endPath = directory.join("/");
     return endPath;
 })();
+
+
+/***/ }),
+
+/***/ 399:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = exports.findCrons = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const fs = __importStar(__nccwpck_require__(7147));
+const utils = __importStar(__nccwpck_require__(1314));
+const inputs = __importStar(__nccwpck_require__(7063));
 // Function to find cronjobs on our file
 const findCrons = (file) => {
     const fileContent = fs.readFileSync(file, "utf-8");
@@ -24766,41 +24804,45 @@ const findCrons = (file) => {
             coincidences.push(line);
         }
     });
+    if (coincidences.length === 0) {
+        core.setFailed("Not found any cronjob.");
+    }
     return coincidences;
 };
+exports.findCrons = findCrons;
 const randomizeValues = (cronjob) => {
     const inputs = cronjob.split(" ");
     var randomizedValues = [];
     if (inputs[0] === "y") {
-        const newMinutes = generateMinutes();
+        const newMinutes = utils.generateMinutes();
         randomizedValues.push(newMinutes);
     }
     else {
         randomizedValues.push("n");
     }
     if (inputs[1] === "y") {
-        const newHours = generateHours();
+        const newHours = utils.generateHours();
         randomizedValues.push(newHours);
     }
     else {
         randomizedValues.push("n");
     }
     if (inputs[2] === "y") {
-        const newDayOfMonth = generateDayOfMonth();
+        const newDayOfMonth = utils.generateDayOfMonth();
         randomizedValues.push(newDayOfMonth);
     }
     else {
         randomizedValues.push("n");
     }
     if (inputs[3] === "y") {
-        const newMonth = generateMonth();
+        const newMonth = utils.generateMonth();
         randomizedValues.push(newMonth);
     }
     else {
         randomizedValues.push("n");
     }
     if (inputs[4] === "y") {
-        const newDayOfWeek = generateDayOfWeek();
+        const newDayOfWeek = utils.generateDayOfWeek();
         randomizedValues.push(newDayOfWeek);
     }
     else {
@@ -24808,20 +24850,26 @@ const randomizeValues = (cronjob) => {
     }
     return randomizedValues;
 };
-const generateMinutes = () => {
-    return Math.floor(Math.random() * 60).toString();
-};
-const generateHours = () => {
-    return Math.floor(Math.random() * 24).toString();
-};
-const generateDayOfMonth = () => {
-    return Math.floor(Math.random() * 28).toString();
-};
-const generateMonth = () => {
-    return Math.floor(Math.random() * 12).toString();
-};
-const generateDayOfWeek = () => {
-    return Math.floor(Math.random() * 7).toString();
+const buildCronjob = (cronjob, randomValues) => {
+    const regex = /"([^"]*)"/g;
+    var values = [];
+    var newValues = [];
+    let match;
+    while ((match = regex.exec(cronjob)) !== null) {
+        values.push(match[1]);
+    }
+    values = values[0].split(" ");
+    for (let value = 0; value < randomValues.length; value++) {
+        if (randomValues[value] !== "n") {
+            newValues.push(randomValues[value]);
+        }
+        else {
+            newValues.push(values[value]);
+        }
+    }
+    const newValue = newValues.join(" ");
+    console.log(`The new cronjob value is: ${newValue}`);
+    return newValues;
 };
 const replaceValues = (cronjob, randomValues, file) => {
     let newCronExpression = cronjob.replace(/"([^"]*)"/, randomValues.join(" "));
@@ -24845,31 +24893,44 @@ const replaceValues = (cronjob, randomValues, file) => {
         });
     });
 };
-const buildCronjob = (cronjob, randomValues) => {
-    const regex = /"([^"]*)"/g;
-    var values = [];
-    var newValues = [];
-    let match;
-    while ((match = regex.exec(cronjob)) !== null) {
-        values.push(match[1]);
-    }
-    values = values[0].split(" ");
-    for (let value = 0; value < randomValues.length; value++) {
-        if (randomValues[value] !== "n") {
-            newValues.push(randomValues[value]);
-        }
-        else {
-            newValues.push(values[value]);
-        }
-    }
-    const newValue = newValues.join(" ");
-    console.log(`The new cronjob value is: ${newValue}`);
-    return newValues;
+const run = async () => {
+    const cronjob = (0, exports.findCrons)(inputs.file)[inputs.whichCron];
+    const randomValues = randomizeValues(inputs.whatToRandomize);
+    const builtCronjob = buildCronjob(cronjob, randomValues);
+    replaceValues(cronjob, builtCronjob, inputs.file);
 };
-const cronjob = findCrons(file)[whichCron];
-const randomValues = randomizeValues(whatToRandomize);
-const builtCronjob = buildCronjob(cronjob, randomValues);
-replaceValues(cronjob, builtCronjob, file);
+exports.run = run;
+
+
+/***/ }),
+
+/***/ 1314:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.generateDayOfWeek = exports.generateMonth = exports.generateDayOfMonth = exports.generateHours = exports.generateMinutes = void 0;
+const generateMinutes = () => {
+    return Math.floor(Math.random() * 60).toString();
+};
+exports.generateMinutes = generateMinutes;
+const generateHours = () => {
+    return Math.floor(Math.random() * 24).toString();
+};
+exports.generateHours = generateHours;
+const generateDayOfMonth = () => {
+    return Math.floor(Math.random() * 28).toString();
+};
+exports.generateDayOfMonth = generateDayOfMonth;
+const generateMonth = () => {
+    return Math.floor(Math.random() * 12).toString();
+};
+exports.generateMonth = generateMonth;
+const generateDayOfWeek = () => {
+    return Math.floor(Math.random() * 7).toString();
+};
+exports.generateDayOfWeek = generateDayOfWeek;
 
 
 /***/ }),
@@ -26761,12 +26822,18 @@ module.exports = parseParams
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(6144);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+var exports = __webpack_exports__;
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const main_1 = __nccwpck_require__(399);
+(0, main_1.run)();
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
