@@ -7,7 +7,7 @@ branding:
 
 inputs:
   whatToRandomize:
-    description: "What values you want to randomize. Use 1 to randomize, and 0 to leave that value. Eg: y y n n n"
+    description: "What values you want to randomize. Use 'y' to randomize, and 'n' to leave that value. Eg: y y n n n"
     required: true
 
   whichCron:
