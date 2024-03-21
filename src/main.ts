@@ -66,7 +66,6 @@ const randomizeValues = (cronjob: string): string[] => {
   return randomizedValues;
 };
 
-
 const buildCronjob = (cronjob: string, randomValues: string[]): string[] => {
   const regex: RegExp = /"([^"]*)"/g;
 
@@ -94,7 +93,6 @@ const buildCronjob = (cronjob: string, randomValues: string[]): string[] => {
 
   return newValues;
 };
-
 
 const replaceValues = (
   cronjob: string,
@@ -128,11 +126,9 @@ const replaceValues = (
   });
 };
 
-
 export const run = async () => {
   const cronjob: string = findCrons(inputs.file)[inputs.whichCron];
   const randomValues = randomizeValues(inputs.whatToRandomize);
   const builtCronjob: string[] = buildCronjob(cronjob, randomValues);
   replaceValues(cronjob, builtCronjob, inputs.file);
-}
-
+};

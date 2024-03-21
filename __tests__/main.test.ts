@@ -6,13 +6,14 @@ import fs from "fs";
 describe("main.ts, findCrons", () => {
   it("Gets an string as an argument.", () => {
     const argument: string = "argument";
-    expect(typeof argument).toBe("string")
+    expect(typeof argument).toBe("string");
 
     jest.clearAllMocks();
   });
 
   it("Returns an arrys of strings when a valid file path is given.", () => {
     const filePath = "testFile.txt";
+
     const expectedCrons = [
       '- cron: cron1',
       '- cron: cron2',
@@ -58,7 +59,5 @@ describe("main.ts, findCrons", () => {
     // Verifica que core.setFailed sea llamado con el mensaje correcto
     expect(core.setFailed).toHaveBeenCalledWith('Not found any cronjob.');
   });
-
-
 
 });

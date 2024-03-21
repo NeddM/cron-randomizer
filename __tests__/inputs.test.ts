@@ -20,7 +20,11 @@ describe("Inputs files", () => {
   });
 
   it("Format the input path file", () => {
-    jest.spyOn(core, "getInput").mockReturnValue("userName/repoName/.github/workflows/test.yaml@refs/heads/development");
+    jest
+      .spyOn(core, "getInput")
+      .mockReturnValue(
+        "userName/repoName/.github/workflows/test.yaml@refs/heads/development",
+      );
 
     const parts: string[] = core.getInput("test1").split("@");
 
@@ -28,7 +32,7 @@ describe("Inputs files", () => {
 
     const result: string = directory.join("/");
 
-    expect(result).toEqual(".github/workflows/test.yaml")
+    expect(result).toEqual(".github/workflows/test.yaml");
 
     jest.restoreAllMocks();
   });
@@ -40,12 +44,9 @@ describe("Inputs files", () => {
     jest.spyOn(core, "getInput").mockReturnValue("");
 
     if (core.getInput("") === "") {
-      whichCronToFail = undefined
+      whichCronToFail = undefined;
     }
 
     expect(whichCronToFail).toBeUndefined();
   });
 });
-
-
-

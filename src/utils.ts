@@ -13,4 +13,3 @@ export const generateMonth = (): string => {
 export const generateDayOfWeek = (): string => {
   return Math.floor(Math.random() * 7).toString();
 };
-
