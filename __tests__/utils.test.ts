@@ -8,15 +8,18 @@ import {
 
 describe("GenerateMinutes", () => {
   it("Returns an string", () => {
+
     const result: string = generateMinutes();
     expect(typeof result).toBe("string");
   });
 
-  it("Returns a number between 0 and 60 as string", () => {
-    const result: string = generateMinutes();
+
+  it('Returns a number between 0 and 60 as string', () => {
+    const result: string = generateMinutes()
     expect(parseInt(result)).toBeGreaterThanOrEqual(0);
     expect(parseInt(result)).toBeLessThanOrEqual(60);
   });
+
 
   it("Returns different values on consecutive calls", () => {
     const results = new Set<string>();
@@ -31,21 +34,25 @@ describe("GenerateMinutes", () => {
 
 describe("GenerateHours", () => {
   it("Returns a string value", () => {
+
     const result: string = generateHours();
     expect(typeof result).toBe("string");
   });
 
+
   it("Returns a random number between 0 and 24", () => {
+
     const result: string = generateHours();
     expect(parseInt(result)).toBeGreaterThanOrEqual(0);
     expect(parseInt(result)).toBeLessThanOrEqual(24);
   });
 
-  it("Returns different values on consecutive calls", () => {
+
+  it('Returns different values on consecutive calls', () => {
     const results = new Set<string>();
 
     for (let i = 0; i < 1000; i++) {
-      results.add(generateHours());
+      results.add(generateHours())
     }
 
     expect(results.size).toBeLessThanOrEqual(24);
@@ -54,10 +61,12 @@ describe("GenerateHours", () => {
 
 describe("GenerateMonth", () => {
   it("Returns a string value", () => {
+
     const result = generateMonth();
 
     expect(typeof result).toBe("string");
   });
+
 
   it("Returns a random value between 1 and 12", () => {
     const result = generateMonth();
@@ -67,6 +76,7 @@ describe("GenerateMonth", () => {
   });
 
   it("Returns different values on consecutive calls", () => {
+
     const results = new Set<string>();
 
     for (let i = 0; i < 1000; i++) {
@@ -102,6 +112,7 @@ describe("generateDayOfMonth", () => {
 });
 
 describe("generateDayOfWeek", () => {
+
   it("Returns a string value", () => {
     const result: string = generateDayOfWeek();
 
@@ -124,4 +135,5 @@ describe("generateDayOfWeek", () => {
 
     expect(results.size).toBeLessThanOrEqual(7);
   });
+
 });

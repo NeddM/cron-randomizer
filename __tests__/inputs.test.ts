@@ -38,6 +38,7 @@ describe("Inputs files", () => {
   });
 
   it("If the input does not exists, it throws an error.", () => {
+
     var whichCronToFail;
 
     jest.spyOn(core, "getInput").mockReturnValue("");
