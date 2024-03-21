@@ -1,0 +1,43 @@
+name: Npm CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/*
+      - development
+  pull_request:
+    branches:
+      - main
+      - development
+
+jobs:
+  build_upload:
+    name: Npm build and upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run install
+        run: npm i
+
+      - name: Run build
+        run: npm run bundle
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Commit binary files to Github
+        if: github.event_name == 'push'
+        run: |
+          if [[ $(git status --porcelain | grep dist) ]]; then
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add dist
+            git commit -m '[Github Actions] add dist folder [ci skip]' -s
+            git push
+          else
+            echo "::notice::dist folder was not changed - no commit done"
+          fi
+
