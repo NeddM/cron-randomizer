@@ -41,5 +41,8 @@
   },
   "dependencies": {
     "@actions/core": "^1.11.1"
-  }
+  },
+	"engines": {
+		"node": ">=v24"
+	}
 }
